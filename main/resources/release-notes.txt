@@ -1,0 +1,29 @@
+Release Notes:
+==============
+[14/Nov/2014]
+Version 0.02:
+-------------
+Introduced features:
+  - Authenticate to CSA (Stratus)
+  - List subscriptions, offerings, organizations, persons
+  - List images, servers
+  - Filter by column
+  - Goto offerings from subscriptions
+  - Save a subscription
+  - Clone an offering
+  - Interpersonate
+  - List running jobs
+
+Bug fixing:
+  - Clear filter once entities get deleted
+
+[30/Sep/2014]
+Version 0.01:
+-------------
+Introduced features:
+  - Authenticate to OpenStack (HP Public Cloud)
+  - List volumes, snapshots, backups
+  - Filter by index
+  - Set name and description on filtered entities
+  - Delete filtered entities
+  - Help
