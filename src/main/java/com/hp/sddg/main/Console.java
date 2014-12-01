@@ -20,10 +20,13 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.jar.Attributes;
@@ -658,6 +661,16 @@ public class Console {
         if (entity == null) return;
 
         String newOfferingName = entity.getProperty("name");
+
+        SimpleDateFormat sdf = new SimpleDateFormat("ddMMMyy", Locale.ENGLISH);
+        String date = sdf.format(new Date());
+        newOfferingName = (newOfferingName.startsWith("Clone of ") ? "" : "Clone of ") + newOfferingName;
+        if (newOfferingName.matches(".* - \\d\\d[A-Z][a-z][a-z]\\d\\d$")) {
+            newOfferingName = newOfferingName.substring(0, newOfferingName.length()-"ddMMMyy".length());
+            newOfferingName = newOfferingName +date;
+        } else {
+            newOfferingName = newOfferingName+" - "+date;
+        }
         newOfferingName = askForValue(newOfferingName);
 
         if (!askForConfirmation()) return;
