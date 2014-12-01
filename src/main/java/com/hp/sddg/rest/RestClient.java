@@ -189,7 +189,7 @@ public class RestClient {
             } catch (IOException e1) {
                 log.debug("Cannot convert error stream to string");
             }
-            throw new IllegalRestStateException(responseCode, e.getMessage(), errorStream, e);
+            throw new IllegalRestStateException(responseCode, errorStream == null ? e.getMessage() : errorStream, errorStream, e);
         } finally {
             if (conn != null && handler == null) {  // close the connection only if received the data synchronously
                 conn.disconnect();
