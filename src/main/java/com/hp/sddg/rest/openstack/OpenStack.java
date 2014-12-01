@@ -138,6 +138,10 @@ public class OpenStack extends AuthenticatedClient {
 
 
     public synchronized void powerMachineOn(String serverId) {
+        String status = getServerStatus(serverId);
+        if (status.equals("ACTIVE")) {
+            return;
+        }
         doPost(computeEndpoint+"/servers/"+serverId+"/action", "{\"os-start\": null}");
     }
 
