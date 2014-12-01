@@ -18,6 +18,7 @@ public abstract class DemoDetail {
     protected final OpenStack openStack;
     protected List<SaveState> state;
     protected long stateSince;
+    protected long taskStarted;
 
     protected String newImageVolumeName;
     protected String newImageSnapshotId;
@@ -76,12 +77,19 @@ public abstract class DemoDetail {
             }
             i++;
         }
-        return value + " ("+ TimeUtils.getTimeDifference(stateSince)+")";
+        if (state.get(state.size()-1) == SaveState.Task_Finished) {
+            return value + " ("+ TimeUtils.getTimeDifference(taskStarted, stateSince)+")";
+        } else {
+            return value + " ("+ TimeUtils.getTimeDifference(stateSince)+")";
+        }
     }
 
     public void setState(SaveState state) {
         this.state.add(state);
         this.stateSince = System.currentTimeMillis();
+        if (state == SaveState.Powering_Off) {              // todo this is not safe; the condition should not depend on a concrete state
+            this.taskStarted = System.currentTimeMillis();
+        }
     }
 
     @Override

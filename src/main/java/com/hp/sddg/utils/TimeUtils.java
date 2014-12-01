@@ -7,9 +7,8 @@ import com.hp.sddg.rest.common.entities.EntityHandler;
  */
 public class TimeUtils {
 
-    public static String getTimeDifference(long earlier) {
-        long now = System.currentTimeMillis();
-        long diff = now - earlier;
+    public static String getTimeDifference(long earlier, long later) {
+        long diff = later - earlier;
         diff = diff / 1000;                                         // in secs
         if (diff == 0) return "fresh list";  //todo this is a general method; should not return this string
         long sec = diff % 60;
@@ -37,5 +36,10 @@ public class TimeUtils {
                 }
             }
         }
+    }
+
+    public static String getTimeDifference(long earlier) {
+        long later = System.currentTimeMillis();
+        return getTimeDifference(earlier, later);
     }
 }
