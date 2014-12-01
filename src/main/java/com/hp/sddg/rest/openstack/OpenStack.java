@@ -150,6 +150,15 @@ public class OpenStack extends AuthenticatedClient {
         if (status.equals("SHUTOFF")) {
             return;
         }
+        doPost(computeEndpoint+"/servers/"+serverId+"/action", "{\"os-stop\": null}");
+    }
+
+    public synchronized void powerMachineOffSync(String serverId) {
+        powerMachineOff(serverId);
+        String status = getServerStatus(serverId);
+        if (status.equals("SHUTOFF")) {
+            return;
+        }
 
         doPost(computeEndpoint+"/servers/"+serverId+"/action", "{\"os-stop\": null}");
 //        for(int i = 0; i < 30; i++) {
