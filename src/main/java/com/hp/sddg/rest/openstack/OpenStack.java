@@ -131,7 +131,7 @@ public class OpenStack extends AuthenticatedClient {
     }
 
     public synchronized void powerMachineOff(String serverId) {
-        String status = getServerImageStatus(serverId);
+        String status = getServerStatus(serverId);
         if (status.equals("SHUTOFF")) {
             return;
         }
@@ -139,7 +139,7 @@ public class OpenStack extends AuthenticatedClient {
         doPost(computeEndpoint+"/servers/"+serverId+"/action", "{\"os-stop\": null}");
 //        for(int i = 0; i < 30; i++) {
         for(;;) {
-            status = getServerImageStatus(serverId);
+            status = getServerStatus(serverId);
             if (status.equals("SHUTOFF")) {
                 return;
             }
@@ -416,7 +416,7 @@ public class OpenStack extends AuthenticatedClient {
         return getValueBlockTemp("/volumes/"+volumeId, "/volume/@snapshot_id");
     }
 
-    private synchronized String getImageStatus(String imageId) {
+    public synchronized String getImageStatus(String imageId) {
         return getValueTemp("/images/" + imageId, "/image/@status");
     }
 
@@ -424,15 +424,15 @@ public class OpenStack extends AuthenticatedClient {
         return getValueTemp("/images/" + imageId, "/image/@name");
     }
 
-    private synchronized String getSnapshotStatus(String snapshotId) {
+    public synchronized String getSnapshotStatus(String snapshotId) {
         return getValueBlockTemp("/snapshots/" + snapshotId, "/snapshot/@status");
     }
 
-    private synchronized String getBackupStatus(String backupId) {
+    public synchronized String getBackupStatus(String backupId) {
         return getValueBlockTemp("/backups/" + backupId, "/backup/@status");
     }
 
-    private synchronized String getVolumeStatus(String volumeId) {
+    public  synchronized String getVolumeStatus(String volumeId) {
         return getValueBlockTemp("/volumes/" + volumeId, "/volume/@status");
     }
 
@@ -440,7 +440,7 @@ public class OpenStack extends AuthenticatedClient {
         return getValueBlockTemp("/snapshots/" + volumeSnapshotId, "/snapshot/@display_name");
     }
 
-    private synchronized String getServerImageStatus(String serverId) {
+    public synchronized String getServerStatus(String serverId) {
         return getValueTemp("/servers/"+serverId, "/server/@status");
     }
 
