@@ -647,6 +647,10 @@ public class Console {
         }
     }
 
+    public void run_version(String[] tokens) {
+        System.out.println("Stratus console "+ Ansi.BOLD +Console.class.getPackage().getImplementationVersion()+ Ansi.RESET +" (build time: "+ Ansi.BOLD +getBuildTime()+ Ansi.RESET +")");
+    }
+
     public void run_clone(String[] tokens) throws IOException {
         if (!enforceMaximumParameters(tokens, 0)) return;
         if (!enforceContext(new String[]{"offerings"})) return;
@@ -719,6 +723,9 @@ public class Console {
         System.out.println("  * "+ Ansi.BOLD + Ansi.CYAN +"goto offerings"+ Ansi.RESET);
         System.out.println("    - switches from subscriptions to offerings");
         System.out.println("    - lists one offering per subscription");
+
+        System.out.println("  * "+ Ansi.BOLD + Ansi.CYAN +"version"+ Ansi.RESET);
+        System.out.println("    - prints version of this tool");
 
         System.out.println("  * "+ Ansi.BOLD + Ansi.CYAN +"exit"+ Ansi.RESET);
         System.out.println("    - exits this console");
