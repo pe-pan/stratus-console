@@ -114,10 +114,21 @@ public class OpenStack extends AuthenticatedClient {
         for(;;) {
             String status = getImageStatus(imageId);
             if (status.equals("ACTIVE")) {
-                return imageId;
+                break;
             }
             try {
                 wait(60 * 1000);
+            } catch (InterruptedException e) {
+                throw new IllegalStateException(e);
+            }
+        }
+        for(;;) {    // wait for server to be back in valid state
+            String status = openStack.getServerStatus(serverId);
+            if (status.equals("SHUTOFF")) {
+                return imageId;
+            }
+            try {
+                wait(10 * 1000);
             } catch (InterruptedException e) {
                 throw new IllegalStateException(e);
             }
