@@ -683,6 +683,42 @@ public class Console {
         //todo clear filter list (as it's supposed not to be up-to-date)
     }
 
+    public void run_power(String[] tokens) throws IOException {
+        if (!enforceMaximumParameters(tokens, 1)) return;
+        if (!enforceAtLeastParameters(tokens, 1) || (!"on".equals(tokens[1]) && !"off".equals(tokens[1]))) {
+            System.out.println(Ansi.BOLD+Ansi.RED+"Please provide either "+Ansi.BOLD+Ansi.CYAN+"on"+Ansi.RED+" or "+Ansi.BOLD+Ansi.CYAN+"off"+Ansi.RESET);
+            return;
+        }
+
+        if (!enforceContext(new String[]{"servers"})) return;
+
+        EntityHandler handler = enforceList();
+        if (handler == null) return;
+        List<Entity> list =  handler.getFilteredEntities();
+
+        System.out.println(Ansi.GREEN+Ansi.BOLD+"Are you sure to "+Ansi.BOLD+Ansi.CYAN+"power "+list.size()+" servers "+tokens[1]+Ansi.GREEN+"?"+Ansi.RESET);
+        String line = new BufferedReader(new InputStreamReader(System.in)).readLine();
+        if (!"yes".equals(line)) return;
+
+        System.out.printf(Ansi.BOLD + Ansi.CYAN +StringUtils.leftPad("", tokens[1].length())+ "          index "+ Ansi.RESET);
+        handler.printTableHeader();
+        int i = 1;
+        for (Entity server : list) {
+            boolean actionTaken;
+            if ("off".equals(tokens[1])) {
+                actionTaken = os.powerMachineOff(server.getId());
+            } else {
+                actionTaken = os.powerMachineOn(server.getId());
+            }
+            if (actionTaken) {
+                System.out.printf(Ansi.BOLD + Ansi.GREEN +"Powered "+tokens[1]+Ansi.RESET +" ["+ Ansi.BOLD +"%04d"+ Ansi.RESET +"] ", i++);
+            } else {
+                System.out.printf(Ansi.BOLD              +"Skipped "+tokens[1]+Ansi.RESET +" ["+ Ansi.BOLD +"%04d"+ Ansi.RESET +"] ", i++);
+            }
+            handler.printEntity(server);
+        }
+    }
+
     public void run_help(String[] tokens) {
         System.out.println("Stratus console");
         System.out.println("Commands:");
@@ -715,6 +751,9 @@ public class Console {
         System.out.println("  * "+ Ansi.BOLD + Ansi.CYAN +"delete"+ Ansi.RESET);
         System.out.println("    - deletes all filtered entities from OpenStack (HTTP DELETE)");
         System.out.println("    - OpenStack entities only");
+
+        System.out.println("  * "+ Ansi.BOLD + Ansi.CYAN +"power [on, off]"+ Ansi.RESET);
+        System.out.println("    - powers all filtered servers on or off ");
 
         System.out.println("  * "+ Ansi.BOLD + Ansi.CYAN +"save"+ Ansi.RESET);
         System.out.println("    - saves volumes/snapshots/images of an active subscription");

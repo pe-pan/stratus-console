@@ -137,23 +137,36 @@ public class OpenStack extends AuthenticatedClient {
     }
 
 
-    public synchronized void powerMachineOn(String serverId) {
+    /**
+     * Power machines on. Return false if already in ACTIVE state; true otherwise.
+     * @param serverId the machine to switch off.
+     * @return false if no action taken.
+     */
+    public synchronized boolean powerMachineOn(String serverId) {
         String status = getServerStatus(serverId);
         if (status.equals("ACTIVE")) {
-            return;
+            return false;
         }
         doPost(computeEndpoint+"/servers/"+serverId+"/action", "{\"os-start\": null}");
+        return true;
     }
 
-    public synchronized void powerMachineOff(String serverId) {
+    /**
+     * Powers machine off. Returns false if already in SHUTOFF state; true otherwise.
+     * @param serverId the machine to switch off.
+     * @return false if no action taken.
+     */
+    public synchronized boolean powerMachineOff(String serverId) {
         String status = getServerStatus(serverId);
         if (status.equals("SHUTOFF")) {
-            return;
+            return false;
         }
         doPost(computeEndpoint+"/servers/"+serverId+"/action", "{\"os-stop\": null}");
+        return true;
     }
 
     public synchronized void powerMachineOffSync(String serverId) {
+        //todo rewrite -> remove the code duplicates
         powerMachineOff(serverId);
         String status = getServerStatus(serverId);
         if (status.equals("SHUTOFF")) {
