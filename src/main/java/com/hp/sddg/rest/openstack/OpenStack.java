@@ -173,7 +173,6 @@ public class OpenStack extends AuthenticatedClient {
             return;
         }
 
-        doPost(computeEndpoint+"/servers/"+serverId+"/action", "{\"os-stop\": null}");
 //        for(int i = 0; i < 30; i++) {
         for(;;) {
             status = getServerStatus(serverId);
