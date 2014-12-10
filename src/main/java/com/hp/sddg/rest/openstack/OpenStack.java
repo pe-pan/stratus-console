@@ -166,16 +166,13 @@ public class OpenStack extends AuthenticatedClient {
     }
 
     public synchronized void powerMachineOffSync(String serverId) {
-        //todo rewrite -> remove the code duplicates
-        powerMachineOff(serverId);
-        String status = getServerStatus(serverId);
-        if (status.equals("SHUTOFF")) {
+        if (!powerMachineOff(serverId)) {
             return;
         }
 
 //        for(int i = 0; i < 30; i++) {
         for(;;) {
-            status = getServerStatus(serverId);
+            String status = getServerStatus(serverId);
             if (status.equals("SHUTOFF")) {
                 return;
             }
