@@ -512,9 +512,9 @@ public class Console {
         return newOfferingName;
     }
 
-    private boolean askForConfirmation() throws IOException {
-        System.out.println(Ansi.BOLD + Ansi.GREEN +"Start the save now?"+ Ansi.RESET);
-        System.out.println("Entering "+ Ansi.BOLD + Ansi.CYAN +"yes"+ Ansi.RESET +" will start the save; "+ Ansi.BOLD + Ansi.YELLOW +"no further change will be possible!!"+ Ansi.RESET);
+    private boolean askForConfirmation(String operation) throws IOException {
+        System.out.println(Ansi.BOLD + Ansi.GREEN +"Start the "+operation+" now?"+ Ansi.RESET);
+        System.out.println("Entering "+ Ansi.BOLD + Ansi.CYAN +"yes"+ Ansi.RESET +" will start the "+operation+"; "+ Ansi.BOLD + Ansi.YELLOW +"no further change will be possible!!"+ Ansi.RESET);
         System.out.println("Entering "+ Ansi.BOLD + Ansi.CYAN +"anything else"+ Ansi.RESET +" will leave this command."+ Ansi.RESET);
         String line = new BufferedReader(new InputStreamReader(System.in)).readLine();
         return "yes".equals(line);
@@ -614,7 +614,7 @@ public class Console {
             }
         } while (repeat);
 
-        if (!askForConfirmation()) return;
+        if (!askForConfirmation("save")) return;
 
         System.out.println("For all machines being saved start cmd-line (as an administrator!) and then execute those 2 commands :");
         System.out.println(Ansi.BOLD + Ansi.CYAN +"Shutdown /s /t 90\n" +
@@ -690,7 +690,7 @@ public class Console {
         }
         newOfferingName = askForValue(newOfferingName);
 
-        if (!askForConfirmation()) return;
+        if (!askForConfirmation("clone")) return;
 
         Offering offering = new Offering(csa.getServiceOffering(entity.getId()), newOfferingName);
         offering.transform();
