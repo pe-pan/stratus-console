@@ -29,7 +29,7 @@ public abstract class DemoDetail {
     }
 
     public static DemoDetail getDemoDetail(String instanceVolumeId, String name, String serverId, String volumeSnapshotId, String size, OpenStack openStack) {
-        if ("NOVOLUME".equals(instanceVolumeId) || "VOLNOTSET".equals(instanceVolumeId)) {
+        if ("NOVOLUME".equals(instanceVolumeId) || "VOLNOTSET".equals(instanceVolumeId) || "NONE".equals(instanceVolumeId)) {
             String imageId = openStack.getImageId(serverId);
             String imageName = openStack.getImageName(imageId);
             return new DemoImage(name, serverId, imageId, imageName, size, openStack);
