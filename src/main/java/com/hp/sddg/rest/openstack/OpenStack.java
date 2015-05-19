@@ -11,6 +11,7 @@ import com.hp.sddg.rest.csa.ResourceProvider;
 import com.hp.sddg.xml.XmlFile;
 import com.jayway.jsonpath.JsonPath;
 import org.apache.log4j.Logger;
+import sun.net.www.protocol.http.HttpURLConnection;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -478,7 +479,15 @@ public class OpenStack extends AuthenticatedClient {
     }
 
     private String _getValueTemp(String uri, String path) {
-        HttpResponse response = doGet(uri);
+        HttpResponse response;
+        try {
+            response = doGet(uri);
+        } catch (IllegalRestStateException e) {
+            if (e.getResponseCode() == HttpURLConnection.HTTP_NOT_FOUND) { // if uri not found, the entity might have been deleted
+                return null;
+            }
+            throw e;
+        }
         XmlFile xml = new XmlFile(response.getResponse());
         return xml.getElementValue(path);
     }
