@@ -8,6 +8,9 @@ public class Column {
     public int size;
     public boolean sorted;
 
+    //todo give columns display name which will be displayed and filter would be run on top of it
+    // display_name -> name
+
     public Column(String name, int size, boolean sorted) {
         this.name = name;
         this.size = size;

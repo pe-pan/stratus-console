@@ -36,6 +36,7 @@ public class DemoImage extends DemoDetail {
         setState(SaveState.Creating_Image);
         newImageSnapshotId = openStack.createImage(serverId, newImageName);
         setState(SaveState.Image_Saved);
+        //todo save the stored ID into a file -> keep log persistent
 
 //        offering.replace(imageId, newImageSnapshotId);
         log.debug(name + ": Image saved: " + newImageName);
@@ -50,6 +51,7 @@ public class DemoImage extends DemoDetail {
 
     @Override
     public String toConsoleString() {
+        //todo show IP address of the machine being saved
         return "Demo "+ Ansi.BOLD + Ansi.CYAN +name+ Ansi.RESET +" (server: "+ Ansi.BOLD + Ansi.CYAN +serverId+ Ansi.RESET +"; image: "+ Ansi.BOLD + Ansi.CYAN +imageName+ Ansi.RESET +(newImageVolumeName == null ? ") will not be saved" : (") will be saved as image "+ Ansi.BOLD + Ansi.CYAN +newImageVolumeName))+ Ansi.RESET;
     }
 

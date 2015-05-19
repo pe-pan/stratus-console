@@ -64,6 +64,7 @@ public class Csa extends AuthenticatedClient {
     }
 
     public String getServiceOffering(String serviceOfferingId) {
+        //todo remove code duplicate with OfferingHandler.get()
         HttpResponse response = doGet(REST_API + "/service/offering/" + serviceOfferingId, ContentType.JSON_JSON);
         return response.getResponse();
     }

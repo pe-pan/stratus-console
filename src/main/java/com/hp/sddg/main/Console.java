@@ -148,6 +148,7 @@ public class Console {
             }
 
             List<String> list = new LinkedList<>();
+            //todo does not consider 0xA0 == 160 == non-breaking space as a delimiter
             Matcher m = Pattern.compile("([^\"]\\S*|\".+?\")\\s*").matcher(line);
             while (m.find()) {
                 list.add(m.group(1).replace("\"", ""));
@@ -241,6 +242,7 @@ public class Console {
     }
 
     private void list(String[] tokens, boolean enforce) {
+        // todo implement list [entity] -> will first run select entity; then list
         if (!enforceMaximumParameters(tokens, 0)) return;
         EntityHandler handler = enforceContext();
         if (handler == null) return;
@@ -397,6 +399,11 @@ public class Console {
         }
     }
 
+    // todo implement list id -> will list only the one entity
+    // todo implement rollback subscription (rollback volumes/images to the original volumes/images)
+    // todo implement save running servers (will save the same as saving a subscription)
+    // todo implement refresh of the filtered entity(ies) only
+
     public void run_delete(String[] tokens) throws IOException {
         if (!enforceAtLeastParameters(tokens, 0)) return;
         if (!enforceMaximumParameters(tokens, 0)) return;
@@ -444,6 +451,10 @@ public class Console {
         EntityHandler handler = enforceList();
         if (handler == null) return;
         List<Entity> list = handler.goTo(tokens[1]);
+        // todo implement -> goto servers from subscriptions (goto servers that belong to the subscription)
+           // to verify details of the servers
+
+        //todo implement -> goto volumes from snapshots (which volume the snapshot belongs to)
         if (list == null) {
             System.out.println(Ansi.BOLD + Ansi.RED +"Cannot go to "+ Ansi.CYAN +tokens[1]+ Ansi.RED +" in this context: "+ Ansi.CYAN +context+ Ansi.RESET);
             return;
@@ -611,6 +622,12 @@ public class Console {
         System.out.print(Ansi.BOLD + Ansi.YELLOW +"Press enter to start the save!!"+ Ansi.RESET);
         System.out.flush();  // to support Ansi Console
         String line = new BufferedReader(new InputStreamReader(System.in)).readLine();
+
+        //todo implement check that the machines are now in shutoff state
+        //todo if not, ask user again if he started the commnands above?
+        //todo and offer him to:
+        //todo   - let's wait till the machines switches off and then start the save
+        //todo   - let's start the save (machine might be in an incorrect state after the save)
 
 //        Offering offering = new Offering(csa.getServiceOffering(sub.getServiceOffering().getId()), newOfferingName);
 //        offering.transform();

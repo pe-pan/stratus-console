@@ -116,6 +116,7 @@ public class DemoVolume extends DemoDetail {
 
     @Override
     public String toConsoleString() {
+        //todo show IP address of the machine being saved
 //        return "Name:"+name+" Server: "+serverId+" Volume: "+volumeSnapshotName+(newImageVolumeName == null ? " will not be saved" : (" will be saved as "+newImageVolumeName));
         return "Demo "+ Ansi.BOLD + Ansi.CYAN +name+ Ansi.RESET +" (server: "+ Ansi.BOLD + Ansi.CYAN +serverId+ Ansi.RESET +(newImageVolumeName == null ? ") will not be saved" : (") will be saved as volume (and snapshot) "+ Ansi.BOLD + Ansi.CYAN +newImageVolumeName))+ Ansi.RESET;
     }
