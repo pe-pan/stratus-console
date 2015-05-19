@@ -3,6 +3,7 @@ package com.hp.sddg.rest.openstack.entities;
 import com.hp.sddg.rest.AuthenticatedClient;
 import com.hp.sddg.rest.ContentType;
 import com.hp.sddg.rest.HttpResponse;
+import com.hp.sddg.rest.IllegalRestStateException;
 import com.hp.sddg.rest.common.entities.Column;
 import com.hp.sddg.rest.common.entities.Entity;
 import com.hp.sddg.rest.common.entities.EntityHandler;
@@ -10,6 +11,7 @@ import com.hp.sddg.rest.openstack.OpenStack;
 import com.hp.sddg.xml.XmlFile;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import sun.net.www.protocol.http.HttpURLConnection;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +32,23 @@ public abstract class OpenStackEntityHandler extends EntityHandler {
         super();
         columns.add(new Column("id"));
         endpoint = OpenStack.STRATUS_STORAGE_ENDPOINT;
+    }
+
+    @Override
+    public Entity get(String id) {
+        HttpResponse response;
+        try {
+            response = client.doGet(endpoint+"/"+this.context+"s/"+id);
+        } catch (IllegalRestStateException e) {
+            if (e.getResponseCode() == HttpURLConnection.HTTP_NOT_FOUND) { // if uri not found, the entity might have been deleted
+                return null;
+            }
+            throw e;
+        }
+        XmlFile xml = new XmlFile(response.getResponse());
+        Node node = xml.getElementNode(context);
+        lastRefresh = System.currentTimeMillis();
+        return newEntity(node);
     }
 
     public List<Entity> list(boolean enforce) {

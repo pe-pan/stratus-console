@@ -700,6 +700,53 @@ public class Console {
         //todo clear filter list (as it's supposed not to be up-to-date)
     }
 
+    public void run_attach(String[] tokens) throws IOException {
+        if (!enforceMaximumParameters(tokens, 1)) return;
+        if (!enforceAtLeastParameters(tokens, 1)) return;
+        if (!enforceContext(new String[]{"volumes", "servers"})) return;
+        Entity entity = enforceSingleFilteredEntity();
+        if (entity == null) return;
+        Entity volume, server;
+        EntityHandler volumeHandler, serverHandler;
+        if (context.equals("volumes")) {
+            volume = entity;
+            volumeHandler = EntityHandler.getHandler(context);
+            serverHandler = EntityHandler.getHandler("servers");
+            server = serverHandler.get(tokens[1]);
+            if (server == null) {
+                System.out.println(Ansi.BOLD+Ansi.RED+"Server "+tokens[1]+" not found!"+Ansi.RESET);
+                return;
+            }
+            List filteredEntities = new LinkedList();
+            filteredEntities.add(server);
+            serverHandler.setFilteredEntities(filteredEntities);
+        } else {
+            server = entity;
+            volumeHandler = EntityHandler.getHandler("volumes");
+            serverHandler = EntityHandler.getHandler(context);
+            volume = volumeHandler.get(tokens[1]);
+            if (volume == null) {
+                System.out.println(Ansi.BOLD+Ansi.RED+"Volume "+tokens[1]+" not found!"+Ansi.RESET);
+                return;
+            }
+            List filteredEntities = new LinkedList();
+            filteredEntities.add(volume);
+            volumeHandler.setFilteredEntities(filteredEntities);
+        }
+
+        System.out.println(Ansi.BOLD + Ansi.CYAN + "Volume:"+Ansi.RESET);
+        volumeHandler.printTableHeader();
+        volumeHandler.printEntity(volume);
+        System.out.println(Ansi.BOLD + Ansi.CYAN + "Server:"+Ansi.RESET);
+        serverHandler.printTableHeader();
+        serverHandler.printEntity(server);
+        System.out.println(Ansi.BOLD + Ansi.GREEN + "Attach volume above to the server above?" + Ansi.RESET);
+
+        if (!askForConfirmation("attach")) return;
+
+        os.attachVolume(server.getId(), volume.getId());
+    }
+
     public void run_power(String[] tokens) throws IOException {
         if (!enforceMaximumParameters(tokens, 1)) return;
         if (!enforceAtLeastParameters(tokens, 1) || (!"on".equals(tokens[1]) && !"off".equals(tokens[1]))) {
@@ -771,6 +818,10 @@ public class Console {
 
         System.out.println("  * "+ Ansi.BOLD + Ansi.CYAN +"power [on, off]"+ Ansi.RESET);
         System.out.println("    - powers all filtered servers on or off ");
+
+        System.out.println("  * "+ Ansi.BOLD + Ansi.CYAN +"attach [volume ID | server ID]"+ Ansi.RESET);
+        System.out.println("    - attaches the volume to the server");
+        System.out.println("    - filter a single volume or server first; type the ID of the other next");
 
         System.out.println("  * "+ Ansi.BOLD + Ansi.CYAN +"save"+ Ansi.RESET);
         System.out.println("    - saves volumes/snapshots/images of an active subscription");
