@@ -48,7 +48,7 @@ public class PersonHandler extends CsaEntityHandler {
     }
 
     @Override
-    protected Entity create(Object object) {
+    protected Entity newEntity(Object object) {
         return new Organization(object);
     }
 

@@ -75,7 +75,7 @@ public class SubscriptionHandler extends CsaEntityHandler {
         return client.doGet(Csa.REST_API+"/service/subscription/person/"+getLoggedUserId(), ContentType.JSON_JSON).getResponse();
     }
 
-    public Entity create(Object o) {
+    public Entity newEntity(Object o) {
         return new Subscription(o);
     }
 

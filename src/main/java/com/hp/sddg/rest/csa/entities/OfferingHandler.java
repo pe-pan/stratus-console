@@ -24,7 +24,7 @@ public class OfferingHandler extends CsaEntityHandler {
         return client.doGet(Csa.REST_API+"/service/offering/", ContentType.JSON_JSON).getResponse();
     }
 
-    public Entity create(Object o) {
+    public Entity newEntity(Object o) {
         return new Offering(o);
     }
 
@@ -42,6 +42,6 @@ public class OfferingHandler extends CsaEntityHandler {
     public Entity get(String id) {
         String json = client.doGet(Csa.REST_API+"/service/offering/"+id, ContentType.JSON_JSON).getResponse();
         lastRefresh = System.currentTimeMillis(); // todo kind of hack (it assumes get() method is called when refreshing the list...)
-        return create(json);
+        return newEntity(json);
     }
 }

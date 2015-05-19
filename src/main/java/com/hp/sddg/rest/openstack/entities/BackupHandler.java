@@ -18,7 +18,7 @@ public class BackupHandler extends OpenStackEntityHandler {
         columns.add(new Column("description"));
     }
 
-    public Backup create(Object node) {
+    public Backup newEntity(Object node) {
         return new Backup(node);
     }
 }

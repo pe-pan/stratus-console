@@ -23,7 +23,7 @@ public class ImageHandler extends OpenStackEntityHandler {
 
     }
     @Override
-    protected Entity create(Object object) {
+    protected Entity newEntity(Object object) {
         return new Image(object);
     }
 }

@@ -90,7 +90,7 @@ public abstract class EntityHandler {
         resetColumnsSize();
     }
 
-    protected abstract Entity create(Object object); // todo hack
+    protected abstract Entity newEntity(Object object); // todo hack
 
     protected String context = "";
     public String getContext() {

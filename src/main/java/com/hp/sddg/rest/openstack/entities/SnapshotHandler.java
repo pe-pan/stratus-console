@@ -22,7 +22,7 @@ public class SnapshotHandler extends OpenStackEntityHandler {
 
     }
 
-    public Snapshot create(Object node) {
+    public Snapshot newEntity(Object node) {
         return new Snapshot(node);
     }
 }

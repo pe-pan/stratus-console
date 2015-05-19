@@ -39,7 +39,7 @@ public abstract class CsaEntityHandler extends EntityHandler {
         List<Entity> returnValue = new ArrayList<>(array.size());
         for (int i = 0; i < array.size(); i++) {
             JSONObject o = (JSONObject) array.get(i);
-            returnValue.add(create(o.toJSONString()));
+            returnValue.add(newEntity(o.toJSONString()));
         }
 
         lastRefresh = System.currentTimeMillis();

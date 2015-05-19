@@ -21,7 +21,7 @@ public class VolumeHandler extends OpenStackEntityHandler {
 
     }
 
-    public Volume create(Object node) {
+    public Volume newEntity(Object node) {
         return new Volume(node);
     }
 }

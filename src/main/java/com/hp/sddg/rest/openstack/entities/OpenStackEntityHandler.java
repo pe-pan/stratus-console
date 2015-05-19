@@ -43,7 +43,7 @@ public abstract class OpenStackEntityHandler extends EntityHandler {
         List<Entity> returnValue = new ArrayList<>(list.getLength());
 
         for (int i = 0; i < list.getLength(); i++) {
-            Entity entity = create(list.item(i));
+            Entity entity = newEntity(list.item(i));
             returnValue.add(entity);
         }
 
@@ -58,7 +58,7 @@ public abstract class OpenStackEntityHandler extends EntityHandler {
         XmlFile xml = new XmlFile(response.getResponse());
         Node node = xml.getElementNode(context);
         entity.clearDirty();
-        return create(node);
+        return newEntity(node);
     }
 
     public void delete(Entity entity) {
