@@ -3,7 +3,8 @@ package com.hp.sddg.rest.csa;
 import com.hp.sddg.rest.AuthenticatedClient;
 import com.hp.sddg.rest.ContentType;
 import com.hp.sddg.rest.HttpResponse;
-import com.hp.sddg.rest.RestClient;
+import com.hp.sddg.rest.common.entities.Entity;
+import com.hp.sddg.rest.common.entities.EntityHandler;
 import com.hp.sddg.rest.openstack.OpenStack;
 import com.hp.sddg.xml.XmlFile;
 import com.jayway.jsonpath.JsonPath;
@@ -143,18 +144,18 @@ public class Subscription {
         List<String> instanceVolumeIds = xml.getElementValues("/ServiceInstance/componentRoot//componentChild[property[name='ATTACHEDVOLUMEID']]/property[name='ATTACHEDVOLUMEID']/values/value");
         List<String> demoNames         = xml.getElementValues("/ServiceInstance/componentRoot//componentChild[property[name='ATTACHEDVOLUMEID']]/property[name='DEMONAME']/values/value");
         List<String> serverIds         = xml.getElementValues("/ServiceInstance/componentRoot//componentChild[property[name='ATTACHEDVOLUMEID']]/property[name='Server ID']/values/value");
-//        List<String> volumeSnapshotIds = xml.getElementValues("/ServiceInstance/componentRoot//componentChild[property[name='ATTACHEDVOLUMEID']]/property[name='VOLUMEREF']/values/value");
+        List<String> volumeSnapshotIds = xml.getElementValues("/ServiceInstance/componentRoot//componentChild[property[name='ATTACHEDVOLUMEID']]/property[name='VOLUMEREF']/values/value");
         List<String> sizes             = xml.getElementValues("/ServiceInstance/componentRoot//componentChild[property[name='ATTACHEDVOLUMEID']]/property[name='SIZEREF']/values/value");
 
         assert(instanceVolumeIds.size() == demoNames.size());
         assert(instanceVolumeIds.size() == serverIds.size());
-//        assert(instanceVolumeIds.size() == volumeSnapshotIds.size());
+        assert(instanceVolumeIds.size() == volumeSnapshotIds.size());
 
         List<DemoDetail> returnValue = new LinkedList<>();
 
         for (int i = 0; i < instanceVolumeIds.size(); i++) {
-//            DemoDetail detail = DemoDetail.getDemoDetail(instanceVolumeIds.get(i), demoNames.get(i), serverIds.get(i), volumeSnapshotIds.get(i), sizes.get(i), openStack);
-            DemoDetail detail = DemoDetail.getDemoDetail(instanceVolumeIds.get(i), demoNames.get(i), serverIds.get(i), null, sizes.get(i), openStack);
+            DemoDetail detail = DemoDetail.getDemoDetail(instanceVolumeIds.get(i), demoNames.get(i), serverIds.get(i), volumeSnapshotIds.get(i), sizes.get(i), openStack);
+//            DemoDetail detail = DemoDetail.getDemoDetail(instanceVolumeIds.get(i), demoNames.get(i), serverIds.get(i), null, sizes.get(i), openStack);
             log.debug(detail);
             if (detail instanceof DemoVolume) { // move images to the end of the list
                 returnValue.add(0, detail);

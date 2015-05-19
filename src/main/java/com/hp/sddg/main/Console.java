@@ -838,9 +838,9 @@ public class Console {
         System.out.println("      - does not publish the offering");
         System.out.println("    - interactive; asks for the new offering name");
 
-        System.out.println("  * "+ Ansi.BOLD + Ansi.CYAN +"goto [offerings | servers]"+ Ansi.RESET);
-        System.out.println("    - switches from subscriptions to offerings or servers");
-        System.out.println("    - lists one offering per subscription or all servers belonging to the subscription");
+        System.out.println("  * "+ Ansi.BOLD + Ansi.CYAN +"goto [offerings | servers | snapshots | images]"+ Ansi.RESET);
+        System.out.println("    - switches from subscriptions to offerings/servers/snapshots/images");
+        System.out.println("    - lists one offering per subscription or all servers/snapshots/images belonging to the subscription");
 
         System.out.println("  * "+ Ansi.BOLD + Ansi.CYAN +"version"+ Ansi.RESET);
         System.out.println("    - prints version of this tool");

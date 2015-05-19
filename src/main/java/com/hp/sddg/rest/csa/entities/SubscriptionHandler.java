@@ -7,6 +7,8 @@ import com.hp.sddg.rest.csa.Csa;
 import com.hp.sddg.rest.common.entities.Entity;
 import com.hp.sddg.rest.common.entities.Column;
 import com.hp.sddg.rest.csa.DemoDetail;
+import com.hp.sddg.rest.csa.DemoImage;
+import com.hp.sddg.rest.csa.DemoVolume;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -95,6 +97,8 @@ public class SubscriptionHandler extends CsaEntityHandler {
         switch (token) {
             case "offerings" : return goToOfferings(token);
             case "servers" : return goToServers(token);
+            case "snapshots" : return goToSnapshots(token);
+            case "images" : return goToImages(token);
             default: return null;
         }
     }
@@ -123,4 +127,41 @@ public class SubscriptionHandler extends CsaEntityHandler {
         }
         return returnValue;
     }
+
+    private List<Entity> goToSnapshots(String token) {
+        List<Entity> returnValue = new LinkedList<>();
+        EntityHandler snapshotHandler = EntityHandler.getHandler(token);
+        System.out.println("Collecting subscription details; please wait...");
+        for (Entity subscription : getFilteredEntities()) {
+            com.hp.sddg.rest.csa.Subscription sub = com.hp.sddg.rest.csa.Subscription.getSubscription(Console.csa, subscription.getId());
+            List<DemoDetail> details = sub.getDemoDetails(Console.os);
+            for (DemoDetail detail : details) {
+                if (detail instanceof DemoVolume) {
+                    DemoVolume volumeDetail = (DemoVolume) detail;
+                    Entity snapshot = snapshotHandler.get(volumeDetail.getVolumeSnapshotId());
+                    returnValue.add(snapshot);
+                }
+            }
+        }
+        return returnValue;
+    }
+
+    private List<Entity> goToImages(String token) {
+        List<Entity> returnValue = new LinkedList<>();
+        EntityHandler imageHandler = EntityHandler.getHandler(token);
+        System.out.println("Collecting subscription details; please wait...");
+        for (Entity subscription : getFilteredEntities()) {
+            com.hp.sddg.rest.csa.Subscription sub = com.hp.sddg.rest.csa.Subscription.getSubscription(Console.csa, subscription.getId());
+            List<DemoDetail> details = sub.getDemoDetails(Console.os);
+            for (DemoDetail detail : details) {
+                if (detail instanceof DemoImage) {
+                    DemoImage imageDetail = (DemoImage) detail;
+                    Entity snapshot = imageHandler.get(imageDetail.getImageId());
+                    returnValue.add(snapshot);
+                }
+            }
+        }
+        return returnValue;
+    }
+
 }
