@@ -79,7 +79,7 @@ public class Console {
 //            }
 //        }
 
-        os = new OpenStack("https://region-a.geo-1.identity.hpcloudsvc.com:35357", username, password, "63404451948086", "https://region-b.geo-1.compute.hpcloudsvc.com/v2/63404451948086");
+        os = new OpenStack("https://region-a.geo-1.identity.hpcloudsvc.com:35357", username, password, "63404451948086", OpenStack.STRATUS_COMPUTE_ENDPOINT);
         try {
 //            System.setProperty("java.net.useSystemProxies", "false");
 //            System.setProperty("https.proxyHost", "");
