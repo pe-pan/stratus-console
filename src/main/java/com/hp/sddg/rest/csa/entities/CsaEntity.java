@@ -65,6 +65,12 @@ public class CsaEntity extends Entity {
         return value;
     }
 
+    public String removeProperty(String key) {
+        String value = properties.remove(key);
+        if (value != null) isDirty = true;
+        return value;
+    }
+
     @Override
     public void setProperty(String key, String value) {
         properties.put(key, value);

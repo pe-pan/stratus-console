@@ -22,6 +22,9 @@ public abstract class Entity {
     public abstract String getId();
     public abstract void clearDirty();
     public abstract String getProperty(String key);
+    public String removeProperty(String key) {
+        throw new IllegalStateException("Not implemented");
+    }
     public abstract void setProperty(String key, String value);
     public abstract boolean isDirty(String key);
     public abstract boolean isDirty();
