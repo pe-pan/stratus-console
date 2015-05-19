@@ -48,6 +48,7 @@ public class OfferingHandler extends CsaEntityHandler {
 
     @Override
     public Entity get(String id) {
+        if (id == null) throw new NullPointerException("ID of an offering must not be null");
         String json = client.doGet(Csa.REST_API+"/service/offering/"+id, ContentType.JSON_JSON).getResponse();
         lastRefresh = System.currentTimeMillis(); // todo kind of hack (it assumes get() method is called when refreshing the list...)
         return newEntity(json);

@@ -36,6 +36,7 @@ public abstract class OpenStackEntityHandler extends EntityHandler {
 
     @Override
     public Entity get(String id) {
+        if (id == null) throw new NullPointerException("ID of "+context+" must not be null");
         HttpResponse response;
         try {
             response = client.doGet(endpoint+"/"+this.context+"s/"+id);
