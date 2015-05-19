@@ -477,16 +477,18 @@ public class OpenStack extends AuthenticatedClient {
         return getValueTemp("/servers/"+serverId, "/server/@status");
     }
 
-    private String getValueTemp(String uri, String path) {
-        HttpResponse response = doGet(computeEndpoint+uri);
+    private String _getValueTemp(String uri, String path) {
+        HttpResponse response = doGet(uri);
         XmlFile xml = new XmlFile(response.getResponse());
         return xml.getElementValue(path);
     }
 
+    private String getValueTemp(String uri, String path) {
+        return _getValueTemp(computeEndpoint+uri, path);
+    }
+
     private String getValueBlockTemp(String uri, String path) {
-        HttpResponse response = doGet(STRATUS_STORAGE_ENDPOINT+uri);
-        XmlFile xml = new XmlFile(response.getResponse());
-        return xml.getElementValue(path);
+        return _getValueTemp(STRATUS_STORAGE_ENDPOINT+uri, path);
     }
 
     public synchronized String getUniqueName(DemoDetail detail, String newOfferingName) {
