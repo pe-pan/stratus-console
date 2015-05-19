@@ -723,9 +723,9 @@ public class Console {
         for (Entity server : list) {
             boolean actionTaken;
             if ("off".equals(tokens[1])) {
-                actionTaken = os.powerMachineOff(server.getId());
+                actionTaken = os.powerMachineOffAsync(server.getId());
             } else {
-                actionTaken = os.powerMachineOn(server.getId());
+                actionTaken = os.powerMachineOnAsync(server.getId());
             }
             if (actionTaken) {
                 System.out.printf(Ansi.BOLD + Ansi.GREEN +"Powered "+tokens[1]+Ansi.RESET +" ["+ Ansi.BOLD +"%04d"+ Ansi.RESET +"] ", i++);

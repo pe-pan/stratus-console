@@ -27,7 +27,7 @@ public class CloneDemo extends Thread implements Runnable {
         log.debug(demo.getName()+" :Processing "+demo.getName());
 
         demo.setState(DemoDetail.SaveState.Powering_Off);
-        openStack.powerMachineOffSync(demo.getServerId());
+        openStack.powerMachineOff(demo.getServerId());
         log.debug(demo.getName() + " :Machine powered off " + demo.getServerId());
         demo.save();
 /*
@@ -81,7 +81,7 @@ public class CloneDemo extends Thread implements Runnable {
         }
 */
         demo.setState(DemoDetail.SaveState.Powering_On);
-        openStack.powerMachineOn(demo.getServerId());
+        openStack.powerMachineOnAsync(demo.getServerId());
         log.debug(demo.getName() + " :Machine powered on");
         demo.setState(DemoDetail.SaveState.Task_Finished);
     }

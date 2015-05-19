@@ -143,7 +143,7 @@ public class OpenStack extends AuthenticatedClient {
      * @param serverId the machine to switch off.
      * @return false if no action taken.
      */
-    public synchronized boolean powerMachineOn(String serverId) {
+    public synchronized boolean powerMachineOnAsync(String serverId) {
         String status = getServerStatus(serverId);
         if (status.equals("ACTIVE")) {
             return false;
@@ -157,7 +157,7 @@ public class OpenStack extends AuthenticatedClient {
      * @param serverId the machine to switch off.
      * @return false if no action taken.
      */
-    public synchronized boolean powerMachineOff(String serverId) {
+    public synchronized boolean powerMachineOffAsync(String serverId) {
         String status = getServerStatus(serverId);
         if (status.equals("SHUTOFF")) {
             return false;
@@ -166,8 +166,8 @@ public class OpenStack extends AuthenticatedClient {
         return true;
     }
 
-    public synchronized void powerMachineOffSync(String serverId) {
-        if (!powerMachineOff(serverId)) {
+    public synchronized void powerMachineOff(String serverId) {
+        if (!powerMachineOffAsync(serverId)) {
             return;
         }
 
