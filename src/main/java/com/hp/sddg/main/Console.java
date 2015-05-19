@@ -452,8 +452,6 @@ public class Console {
         EntityHandler handler = enforceList();
         if (handler == null) return;
         List<Entity> list = handler.goTo(tokens[1]);
-        // todo implement -> goto servers from subscriptions (goto servers that belong to the subscription)
-           // to verify details of the servers
 
         //todo implement -> goto volumes from snapshots (which volume the snapshot belongs to)
         if (list == null) {
