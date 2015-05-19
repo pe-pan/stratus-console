@@ -1,7 +1,6 @@
 package com.hp.sddg.rest.csa;
 
 import com.hp.sddg.main.Ansi;
-import com.hp.sddg.main.Offering;
 import com.hp.sddg.rest.openstack.OpenStack;
 import com.hp.sddg.utils.TimeUtils;
 
@@ -108,7 +107,7 @@ public abstract class DemoDetail {
         this.newImageVolumeName = newImageVolumeName;
     }
 
-    public abstract void save(Offering offering);
+    public abstract void save();
 
     public abstract String toConsoleString();
 

@@ -62,17 +62,4 @@ public class Csa extends AuthenticatedClient {
         log.debug("User "+admin+" has ID: "+userId);
         return userId;
     }
-
-    public String getServiceOffering(String serviceOfferingId) {
-        //todo remove code duplicate with OfferingHandler.get()
-        HttpResponse response = doGet(REST_API + "/service/offering/" + serviceOfferingId, ContentType.JSON_JSON);
-        return response.getResponse();
-    }
-
-    public String createNewServiceOffering(String json) {
-        HttpResponse response = doPost(REST_API + "/service/offering", json);
-        int index = response.getLocation().lastIndexOf('/');
-        String offeringId = response.getLocation().substring(index + 1);
-        return offeringId;
-    }
 }

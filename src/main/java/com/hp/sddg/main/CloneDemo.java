@@ -12,12 +12,10 @@ public class CloneDemo extends Thread implements Runnable {
 
     private final DemoDetail demo;
     private final OpenStack openStack;
-    private final Offering offering;
 
-    public CloneDemo(DemoDetail demo, OpenStack openStack, Offering offering) {
+    public CloneDemo(DemoDetail demo, OpenStack openStack) {
         this.demo = demo;
         this.openStack = openStack;
-        this.offering = offering;
     }
 
     public DemoDetail getDemo() {
@@ -31,7 +29,7 @@ public class CloneDemo extends Thread implements Runnable {
         demo.setState(DemoDetail.SaveState.Powering_Off);
         openStack.powerMachineOffSync(demo.getServerId());
         log.debug(demo.getName() + " :Machine powered off " + demo.getServerId());
-        demo.save(offering);
+        demo.save();
 /*
         if (demo.getInstanceVolumeId().equals("NOVOLUME") || demo.getInstanceVolumeId().equals("VOLNOTSET")) {
             String imageId = openStack.getImageId(demo.getServerId());

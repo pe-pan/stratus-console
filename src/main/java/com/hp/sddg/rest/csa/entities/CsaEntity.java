@@ -7,7 +7,7 @@ import com.jayway.jsonpath.JsonPath;
  * Created by panuska on 2.10.14.
  */
 public class CsaEntity extends Entity {
-    private String json;
+    protected String json;
 
     public CsaEntity(Object json) {
         this.json = (String)json;

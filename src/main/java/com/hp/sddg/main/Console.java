@@ -7,6 +7,7 @@ import com.hp.sddg.rest.csa.Csa;
 import com.hp.sddg.rest.csa.DemoDetail;
 import com.hp.sddg.rest.csa.Subscription;
 import com.hp.sddg.rest.csa.entities.CsaEntityHandler;
+import com.hp.sddg.rest.csa.entities.Offering;
 import com.hp.sddg.rest.csa.entities.SubscriptionHandler;
 import com.hp.sddg.rest.openstack.entities.OpenStackEntityHandler;
 import com.hp.sddg.rest.openstack.OpenStack;
@@ -635,8 +636,7 @@ public class Console {
         List<CloneDemo> cloneThreads  = new LinkedList<>();
         for (DemoDetail demo : details) {
             if (demo.getNewImageVolumeName() == null) continue;    // skip the ones I don't want to save
-//            CloneDemo cloneThread = new CloneDemo(demo, os, offering);
-            CloneDemo cloneThread = new CloneDemo(demo, os, null);
+            CloneDemo cloneThread = new CloneDemo(demo, os);
             cloneThread.start();                    // todo shall I also remove the dead threads?
 
             cloneThreads.add(cloneThread);
@@ -676,6 +676,7 @@ public class Console {
         if (!enforceContext(new String[]{"offerings"})) return;
         Entity entity = enforceSingleFilteredEntity();
         if (entity == null) return;
+        EntityHandler handler = EntityHandler.getHandler(context);
 
         String newOfferingName = entity.getProperty("name");
 
@@ -692,9 +693,8 @@ public class Console {
 
         if (!askForConfirmation("clone")) return;
 
-        Offering offering = new Offering(csa.getServiceOffering(entity.getId()), newOfferingName);
-        offering.transform();
-        String newOfferingId = csa.createNewServiceOffering(offering.getJson());
+        Offering offering = new Offering(entity.toJson(), newOfferingName);
+        String newOfferingId = handler.create(offering);
         System.out.println("New offering "+Ansi.BOLD+Ansi.CYAN+newOfferingName+Ansi.RESET+" created with ID "+Ansi.BOLD+Ansi.CYAN+newOfferingId+Ansi.RESET);
 
         //todo clear filter list (as it's supposed not to be up-to-date)

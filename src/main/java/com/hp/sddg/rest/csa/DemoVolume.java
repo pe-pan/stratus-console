@@ -1,7 +1,6 @@
 package com.hp.sddg.rest.csa;
 
 import com.hp.sddg.main.Ansi;
-import com.hp.sddg.main.Offering;
 import com.hp.sddg.rest.openstack.NotCreatedException;
 import com.hp.sddg.rest.openstack.OpenStack;
 import com.hp.sddg.rest.openstack.VolumeDetails;
@@ -37,7 +36,7 @@ public class DemoVolume extends DemoDetail {
     }
 
     @Override
-    public void save(Offering offering) {
+    public void save() {
         log.debug(name + ": Detaching volume " + getInstanceVolumeId());
         VolumeDetails details = openStack.getVolumeDetails(getInstanceVolumeId());
         setState(SaveState.Detaching_Volume);

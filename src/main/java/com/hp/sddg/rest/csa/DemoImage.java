@@ -1,7 +1,6 @@
 package com.hp.sddg.rest.csa;
 
 import com.hp.sddg.main.Ansi;
-import com.hp.sddg.main.Offering;
 import com.hp.sddg.rest.openstack.OpenStack;
 import org.apache.log4j.Logger;
 
@@ -29,7 +28,7 @@ public class DemoImage extends DemoDetail {
     }
 
     @Override
-    public void save(Offering offering) {
+    public void save() {
 //        String newImageName = openStack.getUniqueName(true, offering.getNewName(), name);
         String newImageName = newImageVolumeName;                                                //todo
         log.debug(name + ": New image name" + newImageName + "; Saving image: " + imageId);

@@ -149,6 +149,10 @@ public abstract class EntityHandler {
         System.out.println(Ansi.RESET);
     }
 
+    public String create(Entity entity) {
+        throw new IllegalStateException("Not implemented");
+    }
+
     public abstract List<Entity> list(boolean enforce);
     public abstract Entity update(Entity entity);
     public abstract void delete(Entity entity);

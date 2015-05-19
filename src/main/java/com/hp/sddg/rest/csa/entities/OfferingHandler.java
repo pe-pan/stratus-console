@@ -1,6 +1,7 @@
 package com.hp.sddg.rest.csa.entities;
 
 import com.hp.sddg.rest.ContentType;
+import com.hp.sddg.rest.HttpResponse;
 import com.hp.sddg.rest.common.entities.Entity;
 import com.hp.sddg.rest.csa.Csa;
 import com.hp.sddg.rest.common.entities.Column;
@@ -26,6 +27,13 @@ public class OfferingHandler extends CsaEntityHandler {
 
     public Entity newEntity(Object o) {
         return new Offering(o);
+    }
+
+    @Override
+    public String create(Entity entity) {
+        HttpResponse response = client.doPost(Csa.REST_API + "/service/offering", entity.toJson());
+        int index = response.getLocation().lastIndexOf('/');
+        return response.getLocation().substring(index + 1);
     }
 
     @Override
