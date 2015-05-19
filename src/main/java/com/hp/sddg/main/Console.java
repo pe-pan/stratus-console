@@ -453,7 +453,6 @@ public class Console {
         if (handler == null) return;
         List<Entity> list = handler.goTo(tokens[1]);
 
-        //todo implement -> goto volumes from snapshots (which volume the snapshot belongs to)
         if (list == null) {
             System.out.println(Ansi.BOLD + Ansi.RED +"Cannot go to "+ Ansi.CYAN +tokens[1]+ Ansi.RED +" in this context: "+ Ansi.CYAN +context+ Ansi.RESET);
             return;
@@ -841,6 +840,10 @@ public class Console {
         System.out.println("  * "+ Ansi.BOLD + Ansi.CYAN +"goto [offerings | servers | snapshots | images]"+ Ansi.RESET);
         System.out.println("    - switches from subscriptions to offerings/servers/snapshots/images");
         System.out.println("    - lists one offering per subscription or all servers/snapshots/images belonging to the subscription");
+
+        System.out.println("  * "+ Ansi.BOLD + Ansi.CYAN +"goto volumes"+ Ansi.RESET);
+        System.out.println("    - switches from snapshots to volumes");
+        System.out.println("    - lists one volume per snapshot");
 
         System.out.println("  * "+ Ansi.BOLD + Ansi.CYAN +"version"+ Ansi.RESET);
         System.out.println("    - prints version of this tool");
