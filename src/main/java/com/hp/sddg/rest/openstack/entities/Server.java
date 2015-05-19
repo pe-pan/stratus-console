@@ -31,9 +31,18 @@ public class Server extends OpenStackEntity {
                     properties.put("address_"+i, addresses.item(i).getTextContent());
                 }
             }
+            String vpn = (String)xpath.evaluate("metadata/meta[@key='SEVPN']", o, XPathConstants.STRING);
+            if (vpn != null && vpn.length() > 0) {
+                if (vpn.startsWith("SEVPNINIT-")) {
+                    vpn = vpn.substring("SEVPNINIT-".length());
+                }
+                if (vpn.endsWith("-SEVPNEND")) {
+                    vpn = vpn.substring(0, vpn.length()-"-SEVPNEND".length());
+                }
+                properties.put("vpn", vpn);
+            }
         } catch (XPathExpressionException e) {
             throw new IllegalStateException(e);
         }
-
     }
 }

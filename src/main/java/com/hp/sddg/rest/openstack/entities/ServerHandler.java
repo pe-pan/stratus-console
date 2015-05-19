@@ -17,6 +17,7 @@ public class ServerHandler extends OpenStackEntityHandler {
         columns.add(new Column("status"));
         columns.add(new Column("address_0"));
         columns.add(new Column("address_1"));
+        columns.add(new Column("vpn"));
 
 //        changeableProperties.add("name");  // it's not possible to change name of a server
 
