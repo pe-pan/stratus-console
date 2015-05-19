@@ -448,7 +448,7 @@ public class Console {
 
     public void run_goto(String[] tokens) {
         if (!enforceAtLeastParameters(tokens, 1)) return;
-        if (!enforceMaximumParameters(tokens, 2)) return;
+        if (!enforceMaximumParameters(tokens, 1)) return;
         EntityHandler handler = enforceList();
         if (handler == null) return;
         List<Entity> list = handler.goTo(tokens[1]);
