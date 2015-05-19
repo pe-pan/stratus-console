@@ -4,7 +4,6 @@ import com.hp.sddg.main.Ansi;
 import com.hp.sddg.rest.AuthenticatedClient;
 import com.hp.sddg.rest.ContentType;
 import com.hp.sddg.rest.HttpResponse;
-import com.hp.sddg.rest.RestClient;
 import com.hp.sddg.xml.XmlFile;
 import org.apache.log4j.Logger;
 
@@ -64,37 +63,6 @@ public class Csa extends AuthenticatedClient {
         return userId;
     }
 
-/*
-    public ResourceProvider getResourceProvider(String adminId, String providerId) {
-        HttpResponse response = client.doGet(REST_URI+"/artifact/fastview/"+providerId+"?userIdentifier="+adminId+"&view=accesspoint");
-        ResourceProvider provider = new ResourceProvider(response.getResponse());
-        log.debug(provider);
-        return provider;
-    }
-*/
-
-/*
-    public Subscription getSubscription (String subscriptionId) {
-        String adminId = getUserId("admin");
-
-        HttpResponse response = client.doGet(Csa.REST_API+"/service/subscription/"+subscriptionId, ContentType.JSON_JSON);
-        String json = response.getResponse();
-        String userId = JsonPath.read(json, "$.ext.csa_requested_by_person_id");
-        String instanceId = JsonPath.read(json, "$.ext.csa_service_instance_id");
-
-        response = client.doGet(Csa.REST_API+"/service/instance/"+instanceId+"/providers", ContentType.JSON_JSON);
-        json = response.getResponse();
-        String providerId = JsonPath.read(json, "$.providers[0].id");
-
-        ResourceProvider provider = getResourceProvider(adminId, providerId);
-
-        response = client.doGet(REST_URI+"/artifact/"+subscriptionId+"?userIdentifier="+adminId);
-        Subscription subscription= new Subscription(response.getResponse(), userId, adminId, provider);
-        log.debug(subscription);
-        return subscription;
-    }
-*/
-
     public String getServiceOffering(String serviceOfferingId) {
         HttpResponse response = doGet(REST_API + "/service/offering/" + serviceOfferingId, ContentType.JSON_JSON);
         return response.getResponse();
@@ -106,8 +74,4 @@ public class Csa extends AuthenticatedClient {
         String offeringId = response.getLocation().substring(index + 1);
         return offeringId;
     }
-
-
 }
-
-
