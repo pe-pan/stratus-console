@@ -814,7 +814,7 @@ public class Console {
         System.out.println("    - deletes all filtered entities from OpenStack (HTTP DELETE)");
         System.out.println("    - OpenStack entities only");
 
-        System.out.println("  * "+ Ansi.BOLD + Ansi.CYAN +"power [on, off]"+ Ansi.RESET);
+        System.out.println("  * "+ Ansi.BOLD + Ansi.CYAN +"power [on | off]"+ Ansi.RESET);
         System.out.println("    - powers all filtered servers on or off ");
 
         System.out.println("  * "+ Ansi.BOLD + Ansi.CYAN +"attach [volume ID | server ID]"+ Ansi.RESET);
