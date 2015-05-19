@@ -80,7 +80,7 @@ public class OpenStackEntity extends Entity {
         StringBuilder b = new StringBuilder();
         for (String key : dirtyProperties) {
             String value = properties.get(key);
-            b.append("\"").append(key).append("\" : \"").append(value).append("\"");
+            b.append("\"").append(key).append("\" : \"").append(value).append("\", ");
         }
         return b.toString();
     }
