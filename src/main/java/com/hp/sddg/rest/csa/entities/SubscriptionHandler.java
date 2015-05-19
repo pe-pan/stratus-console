@@ -1,10 +1,12 @@
 package com.hp.sddg.rest.csa.entities;
 
+import com.hp.sddg.main.Console;
 import com.hp.sddg.rest.ContentType;
 import com.hp.sddg.rest.common.entities.EntityHandler;
 import com.hp.sddg.rest.csa.Csa;
 import com.hp.sddg.rest.common.entities.Entity;
 import com.hp.sddg.rest.common.entities.Column;
+import com.hp.sddg.rest.csa.DemoDetail;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -90,14 +92,34 @@ public class SubscriptionHandler extends CsaEntityHandler {
     }
 
     public List<Entity> goTo(String token) {
-        if (!token.equals("offerings")) {
-            return null;
+        switch (token) {
+            case "offerings" : return goToOfferings(token);
+            case "servers" : return goToServers(token);
+            default: return null;
         }
+    }
+
+    private List<Entity> goToOfferings(String token) {
         List<Entity> returnValue = new LinkedList<>();
         EntityHandler offeringHandler = EntityHandler.getHandler(token);
         for (Entity subscription : getFilteredEntities()) {
             String offeringId = subscription.getProperty("ext.csa_service_offering_id");
             returnValue.add(offeringHandler.get(offeringId));
+        }
+        return returnValue;
+    }
+
+    private List<Entity> goToServers(String token) {
+        List<Entity> returnValue = new LinkedList<>();
+        EntityHandler serverHandler = EntityHandler.getHandler(token);
+        System.out.println("Collecting subscription details; please wait...");
+        for (Entity subscription : getFilteredEntities()) {
+            com.hp.sddg.rest.csa.Subscription sub = com.hp.sddg.rest.csa.Subscription.getSubscription(Console.csa, subscription.getId());
+            List<DemoDetail> details = sub.getDemoDetails(Console.os);
+            for (DemoDetail detail : details) {
+                Entity server = serverHandler.get(detail.getServerId());
+                returnValue.add(server);
+            }
         }
         return returnValue;
     }
