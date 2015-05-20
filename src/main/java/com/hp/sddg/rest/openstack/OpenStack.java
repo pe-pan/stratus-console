@@ -341,11 +341,9 @@ public class OpenStack extends AuthenticatedClient {
         doDelete(STRATUS_STORAGE_ENDPOINT + "/snapshots/"+snapshotId);
         for(;;) {
 //        for(int i = 0; i < 30; i++) {
-            try {
-                String status = getSnapshotStatus(snapshotId);
-            } catch (IllegalRestStateException e) {
-                // snapshot deleted
-                return;
+            String status = getSnapshotStatus(snapshotId);
+            if (status == null) {
+                return; // snapshot deleted
             }
             try {
                 wait(10 * 1000);
