@@ -89,7 +89,7 @@ public class DemoVolume extends DemoDetail {
 
     private String failOver(OpenStack openStack, VolumeDetails details, String newVolumeId, String newVolumeName) {
         setState(SaveState.Deleting_Volume);
-        openStack.deleteVolume(newVolumeId);
+        openStack.deleteVolumeAsync(newVolumeId);
         log.debug(name+": Volume deleted "+newVolumeId+"; going to back the volume up");
         setState(SaveState.Backing_Volume_Up);
         String backupId = openStack.backupVolume(getInstanceVolumeId(), "temp-backup-"+newVolumeName, newVolumeName);
@@ -101,7 +101,7 @@ public class DemoVolume extends DemoDetail {
         openStack.restoreVolume(newVolumeId, backupId);
         log.debug(name+": Volume restored "+newVolumeId+"; going to delete the backup");
         setState(SaveState.Deleting_Backup);
-        openStack.deleteBackup(backupId);
+        openStack.deleteBackupAsync(backupId);
         log.debug(name+": Backup deleted "+backupId);
         return newVolumeId;
     }

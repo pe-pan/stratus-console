@@ -88,7 +88,7 @@ public class CloneDemo extends Thread implements Runnable {
 
 /*
     private String failOver(OpenStack openStack, DemoDetail demo, VolumeDetails details, String newVolumeId, String newVolumeName) {
-        openStack.deleteVolume(newVolumeId);
+        openStack.deleteVolumeAsync(newVolumeId);
         log.info(demo.getName()+":Volume deleted "+newVolumeId+"; going to back the volume up");
         String backupId = openStack.backupVolume(demo.getInstanceVolumeId(), "temp-backup-"+newVolumeName, newVolumeName);
         log.info(demo.getName()+":Volume backed up "+backupId+"; going to create an empty volume");
@@ -96,7 +96,7 @@ public class CloneDemo extends Thread implements Runnable {
         log.info(demo.getName()+":Volume created "+newVolumeId+"; going to restore the backup into the new volume");
         openStack.restoreVolume(newVolumeId, backupId);
         log.info(demo.getName()+":Volume restored "+newVolumeId+"; going to delete the backup");
-        openStack.deleteBackup(backupId);
+        openStack.deleteBackupAsync(backupId);
         log.info(demo.getName()+":Backup deleted "+backupId);
         return newVolumeId;
     }

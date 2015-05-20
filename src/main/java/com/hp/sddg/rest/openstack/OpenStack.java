@@ -329,11 +329,11 @@ public class OpenStack extends AuthenticatedClient {
 //        throw new IllegalStateException("Backup not created "+volumeId+"; "+name);
     }
 
-    public synchronized void deleteVolume(String volumeId) {
+    public synchronized void deleteVolumeAsync(String volumeId) {
         doDelete(STRATUS_STORAGE_ENDPOINT + "/volumes/" + volumeId);
     }
 
-    public synchronized void deleteBackup(String backupId) {
+    public synchronized void deleteBackupAsync(String backupId) {
         doDelete(STRATUS_STORAGE_ENDPOINT + "/backups/" + backupId);
     }
 
