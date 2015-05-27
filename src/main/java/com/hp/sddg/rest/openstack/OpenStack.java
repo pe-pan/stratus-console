@@ -7,7 +7,6 @@ import com.hp.sddg.rest.HttpResponse;
 import com.hp.sddg.rest.IllegalRestStateException;
 import com.hp.sddg.rest.csa.DemoDetail;
 import com.hp.sddg.rest.csa.DemoImage;
-import com.hp.sddg.rest.csa.ResourceProvider;
 import com.hp.sddg.xml.XmlFile;
 import com.jayway.jsonpath.JsonPath;
 import org.apache.log4j.Logger;
@@ -42,14 +41,6 @@ public class OpenStack extends AuthenticatedClient {
     }
 
     private static OpenStack openStack;
-
-    public static OpenStack getCloudClient(ResourceProvider provider) {
-        return new OpenStack(provider.getUrl(), provider.getUsername(), provider.getPassword(), provider.getTenantId(), provider.getComputeEndpoint());
-    }
-
-    public static OpenStack getOpenStack() {
-        return openStack;
-    }
 
     public void authenticate() {
         client.clearCustomHeader();
