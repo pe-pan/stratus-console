@@ -20,6 +20,7 @@ public class DemoVolume extends DemoDetail {
         this.instanceVolumeId = instanceVolumeId;
         this.volumeSnapshotId = volumeSnapshotId;
         this.volumeSnapshotName = volumeSnapshotName;
+        log.debug("Creating DemoVolume "+name+", "+serverId+", "+instanceVolumeId+", "+volumeSnapshotId+", "+volumeSnapshotName+", "+size);
     }
 
     public String getInstanceVolumeId() {

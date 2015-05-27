@@ -16,6 +16,7 @@ public class DemoImage extends DemoDetail {
         super(name, serverId, size, openStack);
         this.imageId = imageId;
         this.imageName = imageName;
+        log.debug("Creating DemoImage "+name+", "+serverId+", "+imageId+", "+imageName+", "+size);
     }
 
     public String getImageId() {
