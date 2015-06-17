@@ -34,9 +34,8 @@ public abstract class DemoDetail {
             String imageName = openStack.getImageName(imageId);
             return new DemoImage(name, serverId, imageId, imageName, size, openStack);
         } else {
-//            String volumeSnapshotName = openStack.getVolumeSnapshotName(volumeSnapshotId);
-//            return new DemoVolume(name, serverId, instanceVolumeId, volumeSnapshotId, volumeSnapshotName, size, openStack);
-            return new DemoVolume(name, serverId, instanceVolumeId, volumeSnapshotId, null, size, openStack);
+            String volumeSnapshotName = openStack.getVolumeSnapshotName(volumeSnapshotId);
+            return new DemoVolume(name, serverId, instanceVolumeId, volumeSnapshotId, volumeSnapshotName, size, openStack);
         }
     }
 
