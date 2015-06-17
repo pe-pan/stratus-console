@@ -16,14 +16,14 @@ public class SnapshotHandler extends OpenStackEntityHandler {
         super();
         this.context = "snapshot";
 
-        columns.add(new Column("display_name"));
+        columns.add(new Column("name"));
         columns.add(new Column("status"));
         columns.add(new Column("size"));
         columns.add(new Column("volume_id"));
-        columns.add(new Column("display_description"));
+        columns.add(new Column("description"));
 
-        changeableProperties.add("display_name");
-        changeableProperties.add("display_description");
+        changeableProperties.add("name");
+        changeableProperties.add("description");
 
     }
 

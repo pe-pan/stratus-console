@@ -22,7 +22,7 @@ import java.util.Locale;
 public class OpenStack extends AuthenticatedClient {
     private static Logger log = Logger.getLogger(OpenStack.class.getName());
 
-    public static final String STRATUS_STORAGE_ENDPOINT = "https://region-b.geo-1.block.hpcloudsvc.com/v1/63404451948086";
+    public static final String STRATUS_STORAGE_ENDPOINT = "https://region-b.geo-1.block.hpcloudsvc.com/v2/63404451948086";
     public static final String STRATUS_COMPUTE_ENDPOINT = "https://region-b.geo-1.compute.hpcloudsvc.com/v2/63404451948086";
 
     private final String url;
@@ -237,8 +237,8 @@ public class OpenStack extends AuthenticatedClient {
                 "    \"volume\":{\n" +
                 "        \"availability_zone\": \""+details.getAz()+"\",\n" +
                 "        \"size\":\""+details.getSize()+"\", \n" +
-                "        \"display_description\": \""+"Clone of "+details.getName()+"\", \n" +
-                "        \"display_name\": \""+newVolumeName+"\",\n" +
+                "        \"description\": \""+"Clone of "+details.getName()+"\", \n" +
+                "        \"name\": \""+newVolumeName+"\",\n" +
                 "        \"source_volid\": \""+details.getId()+"\",\n" +
                 "        \"bootable\": \"true\",\n" +
                 "        \"metadata\":"+details.getMetadata()+"\n" +
@@ -267,8 +267,8 @@ public class OpenStack extends AuthenticatedClient {
     public synchronized String takeVolumeSnapshot (String volumeId, String name) throws NotCreatedException {
         final String data = "{\n" +
                 "    \"snapshot\": {\n" +
-                "        \"display_name\": \""+name+"\",\n" +
-                "        \"display_description\": \""+name+"\",\n" +
+                "        \"name\": \""+name+"\",\n" +
+                "        \"description\": \""+name+"\",\n" +
                 "        \"volume_id\": \""+volumeId+"\"\n" +
                 "    }\n" +
                 "}";
@@ -350,8 +350,8 @@ public class OpenStack extends AuthenticatedClient {
                 "    \"volume\":{\n" +
                 "        \"availability_zone\": \""+details.getAz()+"\",\n" +
                 "        \"size\":\""+details.getSize()+"\", \n" +
-                "        \"display_description\": \"Via restore/backup - "+details.getName()+"\", \n" +
-                "        \"display_name\": \""+name+"\",\n" +
+                "        \"description\": \"Via restore/backup - "+details.getName()+"\", \n" +
+                "        \"name\": \""+name+"\",\n" +
                 "        \"bootable\": \"true\",\n" +
                 "        \"metadata\":"+details.getMetadata()+"\n" +
                 "    }\n" +
@@ -460,7 +460,7 @@ public class OpenStack extends AuthenticatedClient {
     }
 
     public synchronized String getVolumeSnapshotName(String volumeSnapshotId) {
-        return getValueBlockTemp("/snapshots/" + volumeSnapshotId, "/snapshot/@display_name");
+        return getValueBlockTemp("/snapshots/" + volumeSnapshotId, "/snapshot/@name");
     }
 
     public synchronized String getServerStatus(String serverId) {
@@ -505,7 +505,7 @@ public class OpenStack extends AuthenticatedClient {
             zoneSuffix = "";
         } else {
             endpoint = STRATUS_STORAGE_ENDPOINT;
-            uriPrefix = "/volumes.xml?display_name=";
+            uriPrefix = "/volumes.xml?name=";
             bootImageOrVolume = "BootVolume";
             zoneSuffix = "-AZ1";
         }

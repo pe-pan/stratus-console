@@ -18,7 +18,7 @@ public class VolumeDetails {
         this.id = id;
         az = JsonPath.read(json, "$.volume.availability_zone");
         size = JsonPath.read(json, "$.volume.size").toString();
-        name = JsonPath.read(json, "$.volume.display_name");
+        name = JsonPath.read(json, "$.volume.name");
         metadata = JsonPath.read(json, "$.volume.metadata").toString();
         snapshotId = JsonPath.read(json, "$.volume.snapshot_id");
     }
