@@ -24,7 +24,7 @@ public abstract class AuthenticatedClient  {
         try {
             return client.doGet(url, type);
         } catch (IllegalRestStateException e) {
-            if (e.getResponseCode() == HttpURLConnection.HTTP_UNAUTHORIZED) {
+            if (e.getResponseCode() == HttpURLConnection.HTTP_UNAUTHORIZED || e.getResponseCode() == HttpURLConnection.HTTP_FORBIDDEN) {
                 authenticate();
                 return client.doGet(url, type);
             }
@@ -36,7 +36,7 @@ public abstract class AuthenticatedClient  {
         try {
             return client.doPut(url, data, type);
         } catch (IllegalRestStateException e) {
-            if (e.getResponseCode() == HttpURLConnection .HTTP_UNAUTHORIZED) {
+            if (e.getResponseCode() == HttpURLConnection .HTTP_UNAUTHORIZED || e.getResponseCode() == HttpURLConnection.HTTP_FORBIDDEN) {
                 authenticate();
                 return client.doPut(url, data, type);
             }
@@ -52,7 +52,7 @@ public abstract class AuthenticatedClient  {
         try {
             return client.doDelete(url);
         } catch (IllegalRestStateException e) {
-            if (e.getResponseCode() == HttpURLConnection .HTTP_UNAUTHORIZED) {
+            if (e.getResponseCode() == HttpURLConnection .HTTP_UNAUTHORIZED || e.getResponseCode() == HttpURLConnection.HTTP_FORBIDDEN) {
                 authenticate();
                 return client.doDelete(url);
             }
@@ -64,7 +64,19 @@ public abstract class AuthenticatedClient  {
         try {
             return client.doPost(url, data);
         } catch (IllegalRestStateException e) {
-            if (e.getResponseCode() == HttpURLConnection .HTTP_UNAUTHORIZED) {
+            if (e.getResponseCode() == HttpURLConnection .HTTP_UNAUTHORIZED || e.getResponseCode() == HttpURLConnection.HTTP_FORBIDDEN) {
+                authenticate();
+                return client.doPost(url, data);
+            }
+            throw e;
+        }
+    }
+
+    public HttpResponse doPost(String url, String data, ContentType type) {
+        try {
+            return client.doPost(url, data, type);
+        } catch (IllegalRestStateException e) {
+            if (e.getResponseCode() == HttpURLConnection.HTTP_UNAUTHORIZED || e.getResponseCode() == HttpURLConnection.HTTP_FORBIDDEN) {
                 authenticate();
                 return client.doPost(url, data);
             }
