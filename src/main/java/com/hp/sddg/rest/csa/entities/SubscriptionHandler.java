@@ -25,6 +25,7 @@ public class SubscriptionHandler extends CsaEntityHandler {
         this.context = "subscription";
 
         columns.add(new Column("name"));
+        columns.add(new Column("@self"));
         columns.add(new Column("description"));
         columns.add(new Column("ext.csa_subscription_status"));
         columns.add(new Column("ext.csa_service_offering_name"));
