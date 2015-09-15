@@ -498,6 +498,17 @@ public class Console {
         System.out.println("Interpersonated as " + Ansi.BOLD + Ansi.CYAN +handler.getInterpersonatedPerson()+ Ansi.RESET);
     }
 
+    public void run_snapshot (String[] tokens) throws IOException {
+        if (!enforceMaximumParameters(tokens, 1)) return;
+        if (!enforceContext(new String[]{"volumes"})) return;
+        Entity entity = enforceSingleFilteredEntity();
+        if (entity == null) return;
+        //todo make it asynchronous (like save op in second thread)
+        System.out.println("Taking snapshot may take a while...");
+        String snapshotId = os.takeVolumeSnapshot(entity.getId(), tokens[1]);
+        System.out.println("Snapshot taken; ID: "+Ansi.BOLD+Ansi.CYAN+snapshotId+Ansi.RESET);
+    }
+
     private String askForValue(String newOfferingName) throws IOException {
         String line;
         do {
@@ -819,6 +830,10 @@ public class Console {
         System.out.println("  * "+ Ansi.BOLD + Ansi.CYAN +"attach [volume ID | server ID]"+ Ansi.RESET);
         System.out.println("    - attaches the volume to the server");
         System.out.println("    - filter a single volume or server first; type the ID of the other next");
+
+        System.out.println("  * "+ Ansi.BOLD + Ansi.CYAN +"snapshot snapshot_name"+ Ansi.RESET);
+        System.out.println("    - takes a snapshot of the volume");
+        System.out.println("    - filter a single volume first; type the name of the snapshot");
 
         System.out.println("  * "+ Ansi.BOLD + Ansi.CYAN +"save"+ Ansi.RESET);
         System.out.println("    - saves volumes/snapshots/images of an active subscription");
