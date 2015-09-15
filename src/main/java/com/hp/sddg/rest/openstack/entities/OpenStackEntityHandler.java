@@ -1,5 +1,6 @@
 package com.hp.sddg.rest.openstack.entities;
 
+import com.hp.sddg.main.Ansi;
 import com.hp.sddg.rest.AuthenticatedClient;
 import com.hp.sddg.rest.ContentType;
 import com.hp.sddg.rest.HttpResponse;
@@ -13,7 +14,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import sun.net.www.protocol.http.HttpURLConnection;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -57,14 +58,21 @@ public abstract class OpenStackEntityHandler extends EntityHandler {
             resetFilteredEntities();
             return lastEntities;
         }
-        HttpResponse response = client.doGet(endpoint+"/"+this.context+"s/detail");
-        XmlFile xml = new XmlFile(response.getResponse());
-        NodeList list = xml.getElementNodes("/"+context+"s/"+context);
-        List<Entity> returnValue = new ArrayList<>(list.getLength());
+        String marker = "";
+        List<Entity> returnValue = new LinkedList<>();
+        NodeList list;
+        for (;;){
+            HttpResponse response = client.doGet(endpoint+"/"+this.context+"s/detail"+marker);
+            XmlFile xml = new XmlFile(response.getResponse());
+            list = xml.getElementNodes("/"+context+"s/"+context);
+            if (list.getLength() <= 0) {
+                break;
+            }
 
-        for (int i = 0; i < list.getLength(); i++) {
-            Entity entity = newEntity(list.item(i));
-            returnValue.add(entity);
+            for (int i = 0; i < list.getLength(); i++) {
+                Entity entity = newEntity(list.item(i));
+                returnValue.add(entity);
+            }
         }
 
         lastRefresh = System.currentTimeMillis();
