@@ -325,7 +325,11 @@ public class OpenStack extends AuthenticatedClient {
     }
 
     public synchronized void deleteBackupAsync(String backupId) {
-        doDelete(STRATUS_STORAGE_ENDPOINT + "/backups/" + backupId);
+        try {
+            doDelete(STRATUS_STORAGE_ENDPOINT + "/backups/" + backupId);
+        } catch (Exception e) {
+            log.error("Backup "+backupId+" cannot be deleted; ignoring", e);
+        }
     }
 
     public synchronized void deleteVolumeSnapshot (String snapshotId) {
