@@ -123,11 +123,7 @@ public class RestClient {
                     log.debug("Setting "+headerName+": "+headerValue);
 //                    headerName = null;
                 }
-                String csrfToken = cookies.get("x-csrf-token");  //todo hack to send csrf tokens for CSA swagger API (posts)
-                if (csrfToken != null) {
-                    conn.setRequestProperty("x-csrf-token", csrfToken);
-                    log.debug("Setting "+"x-csrf-token"+": "+csrfToken);
-                }
+                cookies.remove("x-csrf-token");
                 conn.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.22 (KHTML, like Gecko) Chrome/25.0.1364.97 Safari/537.22");
 //                log.debug("Setting Referer into: "+oldLocation);
 //                conn.setRequestProperty("Referer", oldLocation);      // todo an evil hack; this is because of downloading DevBridge... so they know the URL where DevBridge will be pointing at
