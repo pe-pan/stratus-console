@@ -9,6 +9,7 @@ import com.hp.sddg.rest.common.entities.Column;
 import com.hp.sddg.rest.csa.DemoDetail;
 import com.hp.sddg.rest.csa.DemoImage;
 import com.hp.sddg.rest.csa.DemoVolume;
+import org.apache.log4j.Logger;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -17,6 +18,7 @@ import java.util.List;
  * Created by panuska on 2.10.14.
  */
 public class SubscriptionHandler extends CsaEntityHandler {
+    private static Logger log = Logger.getLogger(SubscriptionHandler.class.getName());
 
     private String loggedUserId;
 
@@ -123,6 +125,7 @@ public class SubscriptionHandler extends CsaEntityHandler {
             List<DemoDetail> details = sub.getDemoDetails(Console.os);
             for (DemoDetail detail : details) {
                 Entity server = serverHandler.get(detail.getServerId());
+                log.debug("Listing server "+detail.getServerId()+"; details: "+server);
                 returnValue.add(server);
             }
         }
