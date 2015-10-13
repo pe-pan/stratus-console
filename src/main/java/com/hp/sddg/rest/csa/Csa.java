@@ -2,7 +2,6 @@ package com.hp.sddg.rest.csa;
 
 import com.hp.sddg.main.Ansi;
 import com.hp.sddg.rest.AuthenticatedClient;
-import com.hp.sddg.rest.ContentType;
 import com.hp.sddg.rest.HttpResponse;
 import com.hp.sddg.xml.XmlFile;
 import org.apache.log4j.Logger;
@@ -13,7 +12,7 @@ import org.apache.log4j.Logger;
 public class Csa extends AuthenticatedClient {
     private static Logger log = Logger.getLogger(Csa.class.getName());
 
-    public static final String REST_URL = "https://csa4.hpswdemoportal.com/csa";
+    public static final String REST_URL = "https://hpswdemoportal.com/csa";
     public static final String REST_URI = REST_URL +"/rest";
     public static final String REST_API = REST_URL +"/api";
 
