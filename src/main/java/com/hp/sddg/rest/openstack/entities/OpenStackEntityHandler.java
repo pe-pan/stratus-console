@@ -74,6 +74,10 @@ public abstract class OpenStackEntityHandler extends EntityHandler {
                 returnValue.add(entity);
             }
             if ("snapshot".equals(context)) break; //todo bug in HPCS REST API; marker parameter does not work for snapshots
+            marker = "?marker="+returnValue.get(returnValue.size()-1).getId();
+            if (list.getLength() == 1000) {
+                System.out.println("At least "+Ansi.BOLD+returnValue.size()+Ansi.RESET+" "+context+"s");
+            }
         }
 
         lastRefresh = System.currentTimeMillis();
