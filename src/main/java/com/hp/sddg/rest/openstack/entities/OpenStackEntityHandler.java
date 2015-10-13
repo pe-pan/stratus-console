@@ -50,7 +50,7 @@ public abstract class OpenStackEntityHandler extends EntityHandler {
         }
         XmlFile xml = new XmlFile(response.getResponse());
         Node node = xml.getElementNode(context);
-        lastRefresh = System.currentTimeMillis();
+        lastRefresh = System.currentTimeMillis();          //todo hack: last refresh should not be set here
         return newEntity(node);
     }
 
