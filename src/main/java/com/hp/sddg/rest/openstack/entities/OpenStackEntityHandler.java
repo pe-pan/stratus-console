@@ -43,6 +43,7 @@ public abstract class OpenStackEntityHandler extends EntityHandler {
             response = client.doGet(endpoint+"/"+this.context+"s/"+id);
         } catch (IllegalRestStateException e) {
             if (e.getResponseCode() == HttpURLConnection.HTTP_NOT_FOUND) { // if uri not found, the entity might have been deleted
+                lastRefresh = System.currentTimeMillis();  //todo hack: last refresh should not be set here
                 return null;
             }
             throw e;
