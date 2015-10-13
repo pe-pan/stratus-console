@@ -126,7 +126,9 @@ public class SubscriptionHandler extends CsaEntityHandler {
             for (DemoDetail detail : details) {
                 Entity server = serverHandler.get(detail.getServerId());
                 log.debug("Listing server "+detail.getServerId()+"; details: "+server);
-                returnValue.add(server);
+                if (server != null) {
+                    returnValue.add(server);
+                }
             }
         }
         return returnValue;
