@@ -440,7 +440,7 @@ public class OpenStack extends AuthenticatedClient {
     }
 
     public synchronized String getSnapshotId(String volumeId) {
-        return getValueBlockTemp("/volumes/"+volumeId, "/volume/@snapshot_id");
+        return getValueBlockTemp("/volumes/" + volumeId, "/volume/@snapshot_id");
     }
 
     public synchronized String getImageStatus(String imageId) {
@@ -468,10 +468,14 @@ public class OpenStack extends AuthenticatedClient {
     }
 
     public synchronized String getServerStatus(String serverId) {
-        return getValueTemp("/servers/"+serverId, "/server/@status");
+        return getValueTemp("/servers/" + serverId, "/server/@status");
     }
 
-    private String _getValueTemp(String uri, String path) {
+    public synchronized String[] getServerAttachments(String serverId) {
+        return getValuesTemp("/servers/" + serverId + "/os-volume_attachments", "/volumeAttachments/volumeAttachment/@id");
+    }
+
+    private XmlFile getXml(String uri) {
         HttpResponse response;
         try {
             response = doGet(uri);
@@ -481,12 +485,27 @@ public class OpenStack extends AuthenticatedClient {
             }
             throw e;
         }
-        XmlFile xml = new XmlFile(response.getResponse());
+        return new XmlFile(response.getResponse());
+    }
+
+    private String _getValueTemp(String uri, String path) {
+        XmlFile xml = getXml(uri);
+        if (xml == null) return null;
         return xml.getElementValue(path);
     }
 
+    private String[] _getValuesTemp(String uri, String path) {
+        XmlFile xml = getXml(uri);
+        if (xml == null) return null;
+        return xml.getElementValues(path);
+    }
+
     private String getValueTemp(String uri, String path) {
-        return _getValueTemp(computeEndpoint+uri, path);
+        return _getValueTemp(computeEndpoint + uri, path);
+    }
+
+    private String[] getValuesTemp(String uri, String path) {
+        return _getValuesTemp(computeEndpoint + uri, path);
     }
 
     private String getValueBlockTemp(String uri, String path) {

@@ -62,13 +62,13 @@ public class XmlFile {
         }
     }
 
-    public List<String> getElementValues(String xpathString) {
+    public String[] getElementValues(String xpathString) {
         try {
             XPathExpression expression = xpath.compile(xpathString);
             NodeList nodes = (NodeList) expression.evaluate(document, XPathConstants.NODESET);
-            List<String> returnValue = new ArrayList<>(nodes.getLength());
+            String[] returnValue = new String[nodes.getLength()];
             for (int i = 0; i < nodes.getLength(); i++) {
-                returnValue.add(nodes.item(i).getTextContent());
+                returnValue[i] = nodes.item(i).getTextContent();
             }
             return returnValue;
         } catch (XPathExpressionException e) {

@@ -2,6 +2,7 @@ package com.hp.sddg.rest.csa;
 
 import com.hp.sddg.main.Ansi;
 import com.hp.sddg.rest.openstack.OpenStack;
+import com.hp.sddg.rest.openstack.VolumeDetails;
 import com.hp.sddg.utils.TimeUtils;
 
 import java.util.LinkedList;
@@ -36,6 +37,28 @@ public abstract class DemoDetail {
         } else {
             String volumeSnapshotName = openStack.getVolumeSnapshotName(volumeSnapshotId);
             return new DemoVolume(name, serverId, instanceVolumeId, volumeSnapshotId, volumeSnapshotName, size, openStack);
+        }
+    }
+
+    public static DemoDetail getDemoDetail(String demoName, String serverId, OpenStack openStack) {
+        String[] attachments = openStack.getServerAttachments(serverId);
+        if (attachments == null || attachments.length == 0) {
+            String imageId = openStack.getImageId(serverId);
+            String imageName = openStack.getImageName(imageId);
+            //todo this was not tested (is size 30 correct?)
+            return new DemoImage(demoName, serverId, imageId, imageName, "30", openStack);
+        } else {
+            if (attachments.length > 1) {
+                System.out.println(Ansi.BOLD+Ansi.RED+"Saving a server having more attachments is not supported; these are the volumes attached to server "+Ansi.CYAN+serverId+Ansi.RESET);
+                for (String attachment : attachments) {
+                    System.out.println(Ansi.BOLD+Ansi.CYAN+attachment+Ansi.RESET);
+                }
+                return null;
+            }
+            String volumeId = attachments[0];
+            VolumeDetails details = openStack.getVolumeDetails(volumeId);
+            //todo it uses volume name instead of snapshot name
+            return new DemoVolume(demoName, serverId, attachments[0], null, details.getName(), details.getSize(), openStack);
         }
     }
 

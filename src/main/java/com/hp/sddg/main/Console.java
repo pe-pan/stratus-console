@@ -11,6 +11,7 @@ import com.hp.sddg.rest.csa.entities.Offering;
 import com.hp.sddg.rest.csa.entities.SubscriptionHandler;
 import com.hp.sddg.rest.openstack.entities.OpenStackEntityHandler;
 import com.hp.sddg.rest.openstack.OpenStack;
+import com.hp.sddg.rest.openstack.entities.ServerHandler;
 import com.hp.sddg.utils.TimeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -532,15 +533,40 @@ public class Console {
 
     public void run_save(String[] tokens) throws IOException {
         if (!enforceMaximumParameters(tokens, 0)) return;
-        if (!enforceContext(new String[]{"subscriptions"})) return;
-        Entity entity = enforceSingleFilteredEntity();
-        if (entity == null) return;
+        if (!enforceContext(new String[]{"subscriptions", "servers"})) return;
 
-        //todo this should be done differently
-        System.out.println("Collecting subscription details; please wait...");
-        Subscription sub = Subscription.getSubscription(csa, entity.getId());
-        String newOfferingName = sub.getName();
-        List<DemoDetail> details = sub.getDemoDetails(os);
+        boolean savingSubscription = "subscriptions".equals(context);
+
+        List<DemoDetail> details;
+        String newOfferingName;
+        if (savingSubscription) {
+            Entity entity = enforceSingleFilteredEntity();
+            if (entity == null) return;
+
+            //todo this should be done differently
+            System.out.println("Collecting subscription details; please wait...");
+            Subscription sub = Subscription.getSubscription(csa, entity.getId());
+            newOfferingName = sub.getName();
+            details = sub.getDemoDetails(os);
+        } else {  //saving individual servers
+            EntityHandler handler = enforceList();
+            if (handler == null) return;
+
+            System.out.println("Collecting server details; please wait...");
+            newOfferingName = "Server-save-"+System.currentTimeMillis();
+            List<Entity> servers = handler.getFilteredEntities();
+            details = new LinkedList<>();
+            for (Entity server : servers) {
+                String demoName = server.getProperty(ServerHandler.PUBLIC_IP_ADDR);
+                if (demoName == null) demoName = server.getProperty(ServerHandler.PRIVATE_IP_ADDR);
+                if (demoName == null) demoName = server.getId();
+
+                DemoDetail detail = DemoDetail.getDemoDetail(demoName, server.getId(), os);
+                if (detail != null) {
+                    details.add(detail);
+                }
+            }
+        }
 
         System.out.println("New volumes/images are going to be saved from "+ Ansi.BOLD + Ansi.CYAN +details.size()+ Ansi.RESET +" running server instances.");
 //        System.out.println("Do you also want to create a new offering?");
@@ -836,7 +862,8 @@ public class Console {
         System.out.println("    - filter a single volume first; type the name of the snapshot");
 
         System.out.println("  * "+ Ansi.BOLD + Ansi.CYAN +"save"+ Ansi.RESET);
-        System.out.println("    - saves volumes/snapshots/images of an active subscription");
+        System.out.println("    - saves volumes/snapshots/images of an active subscription / running server(s)");
+        System.out.println("    - list a single subscription or several servers first");
         System.out.println("    - interactive; asks for volume/image names");
 
         System.out.println("  * "+ Ansi.BOLD + Ansi.CYAN +"jobs"+ Ansi.RESET);

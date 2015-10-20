@@ -9,14 +9,16 @@ import com.hp.sddg.rest.openstack.OpenStack;
  */
 public class ServerHandler extends OpenStackEntityHandler {
 
+    public static final String PUBLIC_IP_ADDR = "address_1";
+    public static final String PRIVATE_IP_ADDR = "address_0";
     public ServerHandler() {
         super();
         this.context = "server";
 
         columns.add(new Column("name"));
         columns.add(new Column("status"));
-        columns.add(new Column("address_0"));
-        columns.add(new Column("address_1"));
+        columns.add(new Column(PRIVATE_IP_ADDR));
+        columns.add(new Column(PUBLIC_IP_ADDR));
         columns.add(new Column("vpn"));
 
 //        changeableProperties.add("name");  // it's not possible to change name of a server
