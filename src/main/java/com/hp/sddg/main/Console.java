@@ -204,7 +204,7 @@ public class Console {
         if (handler == null) return null;
         List<Entity> list = handler.getFilteredEntities();
         if (list == null || list.size() == 0) {
-            System.out.println(Ansi.BOLD + Ansi.RED + "List entities first!" + Ansi.RESET);
+            System.out.println(Ansi.BOLD + Ansi.RED + "List "+context+" first!" + Ansi.RESET);
             return null;
         }
         return handler;
